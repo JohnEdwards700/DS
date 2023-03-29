@@ -17,8 +17,8 @@ class ListTester {
    */
   static void stringTest(){
     DSArrayList<String> l = new DSArrayList<String>();
-    l.add(3);
-    l.add(22);
+    l.add("love");
+    l.add("hate");
 
     System.out.println("The list has size " + l.length());
 

@@ -1,14 +1,23 @@
 /**
  * Generic DSArrayList that can hold objects of *any* type
  */
-class DSArrayList<E> implements DSList { // automatically a subclass of Object
+class DSArrayList<E> implements DSList<E> { // automatically a subclass of Object
     // therefore it inherits all methods of the Object class
     // Fields
     private E[] a;// = new int[10]; // The backing array
     private int length; // Number of items that count as being in the list
-    private int capacity = 10; // Always equal to a.length
+    private int capacity; // Always equal to a.length
 
     // Methods
+
+    /**
+     * Default constructor - builds an object of the class
+     */
+    public DSArrayList(){
+        this.length = 0; // Number of items that count as being in the list
+        this.capacity = 10; // Always equal to a.length
+        this.a = (E[])(new Object[this.capacity]); // The backing array
+    }
 
     /**
      * The add method should never run out of space

@@ -1,5 +1,5 @@
 
-class DSArrayListOfInts implements DSList { // automatically a subclass of Object
+class DSArrayListOfInts  { // automatically a subclass of Object
     // therefore it inherits all methods of the Object class
     // Fields
     private int[] a = new int[10]; // The backing array

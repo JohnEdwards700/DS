@@ -4,10 +4,10 @@
  * An interface describes behavior, "from the outside."
  */
 
-public interface DSList{
-    public void add(int n); // operate by side effects
+public interface DSList<E>{
+    public void add(E n); // operate by side effects
     
-    public void replace(int idx, int newValue);
+    public void replace(int idx, E newValue);
     
     public int length();
     
@@ -15,11 +15,11 @@ public interface DSList{
     
     public void remove(int idx);
     
-    public int count(int item);
+    public int count(E item);
     
-    public int get(int idx);
+    public E get(int idx);
     
-    public int find(int item);
+    public int find(E item);
 	
 
 }
