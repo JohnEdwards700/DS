@@ -106,7 +106,7 @@ class DSArrayList<E> implements DSList<E> { // automatically a subclass of Objec
     // To do this we override the "toString()" method of the object class
     @Override
     public String toString() {
-        String rv = "["; // The string we will eventually return
+        String rv = "Here comes a cool array: ["; // The string we will eventually return
 
         if(this.length == 0) return "[]";
 
