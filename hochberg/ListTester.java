@@ -31,8 +31,10 @@ class ListTester {
     HashMap<String, String> h = new HashMap<>();
     h.put("Ben", "Ohhh");
     h.put("Martha", "Okay!");
+    h.put("Ben", "Okay!");
 
     System.out.println("Martha says: " + h.get("Martha"));
+    System.out.println("Ben says: " + h.get("Ben"));
   }
 
   /**
