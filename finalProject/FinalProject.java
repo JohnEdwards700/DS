@@ -10,11 +10,13 @@
      * @param b The board on which to make the move
      * @param player 1 for 'X' or 2 for 'O'
      * 
-     * Operates by side effects, so returns no value.
+     * @return An int[2] array containing [row, column] of where player makes a move
+     * 
+     * rows and columns are indexed from 0
      * 
      * This method is intended to try to win the game by obtaining the first 5-in-a-row
      */
-    public void playShortGame(char[][] b, int player);
+    public int[] playShortGame(char[][] b, int player);
 
 
     /**
@@ -24,12 +26,14 @@
      * @param b The board on which to make the move
      * @param player 1 for 'X' or 2 for 'O'
      * 
-     * Operates by side effects, so returns no value.
+     * @return An int[2] array containing [row, column] of where player makes a move
+     * 
+     * rows and columns are indexed from 0
      * 
      * This method is intended to try to win the game by obtaining as many 5-in-a-rows
      * as possible.
      */
-    public void playLongGame(char[][] b, int player);
+    public int[] playLongGame(char[][] b, int player);
 
 
     /**

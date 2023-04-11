@@ -13,6 +13,7 @@ class DSArrayList<E> implements DSList<E> { // automatically a subclass of Objec
     /**
      * Default constructor - builds an object of the class
      */
+    @SuppressWarnings("unchecked")
     public DSArrayList(){
         this.length = 0; // Number of items that count as being in the list
         this.capacity = 10; // Always equal to a.length
@@ -26,6 +27,7 @@ class DSArrayList<E> implements DSList<E> { // automatically a subclass of Objec
      *  - If so, make a bigger array, copy into it, update reference a
      *       
      */
+    @SuppressWarnings("unchecked")
     public void add(E n) {
         if(this.length >= this.capacity){ // need to add space
             //int newCapacity = capacity + 1000000; // Memory wasteful
