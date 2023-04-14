@@ -49,6 +49,20 @@ public class GraphTester {
     System.out.println("Friendliest word = " + friendliest);
   }
 
+  /**
+   * Use BFS to find the length of a shortest path in a graph
+   * 
+   * @param g The graph
+   * @param start The first vertex of the path
+   * @param end The destination vertex to search for
+   */
+  public static int lengthOfShortestPath
+    (HashMap<String, DSArrayList<String>> g,
+    String start, 
+    String end){
+      
+    }
+
   public static String getFriendliest(HashMap<String, DSArrayList<String>> g){
     // Discover that key with the most neighbors, and return it
     String friend = "";
