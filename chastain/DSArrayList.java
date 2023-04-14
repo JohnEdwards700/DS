@@ -1,123 +1,90 @@
+class DSArrayList<E> implements DSList<E>{
+
+private int capacity = 10; //how much a can contain (we will maintain this)
+private E[] a; //backing array
+//private int[] a = new int[capacity];
+private int length; // Number of items that count as being in the list
+
+// Methods 
+
 /**
- * Generic DSArrayList that can hold objects of *any* type
+ * Default constructor - builds an object of the class
  */
-class DSArrayList<E> implements DSList<E> { // automatically a subclass of Object
-    // therefore it inherits all methods of the Object class
-    // Fields
-    private Object[] a;// = new int[10]; // The backing array
-    private int length; // Number of items that count as being in the list
-    private int capacity; // Always equal to a.length
+@SuppressWarnings("unchecked")
+public DSArrayList(){
+        this.capacity = 10; 
+        this.length = 0;
+        this.a = (E[])(new Object[this.capacity]);
+//      new [this.capacity];
+}
 
-    // Methods
+@SuppressWarnings("unchecked")  
+        public void add(E n){ 
+                if(this.length >= this.capacity){
+                        int newCapacity = capacity * 2;
+                        E[] newA = (E[])(new Object[newCapacity]);
+                        for(int i = 0; i < this.capacity; i++){
+                                newA[i] = a[i];
+                        }
+                        this.a = newA;
+                        this.capacity = newCapacity;
+                }
 
-    /**
-     * Default constructor - builds an object of the class
-     */
-    public DSArrayList(){
-        this.length = 0; // Number of items that count as being in the list
-        this.capacity = 10; // Always equal to a.length
-        this.a = new Object [this.capacity]; // The backing array
-    }
+                this.a[this.length] = n;
+                this.length++;
+	}
 
-    /**
-     * The add method should never run out of space
-     * To effect this, we'll check before we add a new item:
-     *  - Are we about to add it beyond the end of the array?
-     *  - If so, make a bigger array, copy into it, update reference a
-     *       
-     */
-    public void add(E n) {
-        if(this.length >= this.capacity){ // need to add space
-            //int newCapacity = capacity + 1000000; // Memory wasteful
-            //int newCapacity = capacity + 10; // Time slowful
-            int newCapacity = (int)(capacity * 1.05) + 1; // fast, unwasteful
-            //int newCapacity = 2 * capacity; // industry standard
-            //System.out.println("Resizing to size " + newCapacity);
-            Object[] newA = new Object [newCapacity];
-            for(int i = 0; i < this.capacity; i++){
-                newA[i] = a[i];
-            }
-            this.a = newA;
-            this.capacity = newCapacity;
+        public void replace(int idx, E newValue){
+                this.a[idx] = newValue;
         }
-        this.a[this.length] = n;
-        this.length++;
-    } // operate by side effects
 
-
-    /**
-     * Replace the item at index idx with the newValue
-     */
-    public void replace(int idx, E newValue) {
-        this.a[idx] = newValue;
-    }
-
-    public int length() {
-        return this.length;
-    }
-
-    public void sort() {
-    }
-
-    public void remove(int idx) { // today
-        // Move the items to get rid of the item at index idx
-        for (int i = idx; i < this.length - 1; i++) {
-            this.a[i] = this.a[i + 1];
+        public void sort(){
         }
-        // Now some bookkeeping
-        this.length--;
-    }
 
-    /**
-     * Counts number of occurrences of item in our List,
-     * assuming that item type implements the equals method.
-     * 
-     * @param item The item to enumerate in our list
-     * @return The number of occurrences of item in our list
-     */
-    public int count(E item) {
-        int c = 0;
-        for (int i = 0; i < this.length; i++) {
-            if (this.a[i].equals(item))
-                c++;
+        public int length(){
+                return this.length;
         }
-        return c;
-    }
 
 
-    public E get(int idx) {
-	@SuppressWarnings("unchecked")
-	final E e = (E)this.a[idx];
-        return e;
-    }
-
-    /**
-     * Return the index of the first occurrence of item
-     * Or return -1 if it is not there.
-     */
-    public int find(E item) {
-        for (int i = 0; i < this.length; i++) {
-            if (this.a[i].equals(item))
-                return i;
+        public void remove(int idx){
+                for(int i = idx; i < this.length - 1; i++){
+                        this.a[i] = this.a[i+1];
+                }
+                this.length--;
         }
-        return -1;
-    }
 
-    // We would like our DSArrayList objects to be able to print themselves
-    // And it should look pretty!
-    // To do this we override the "toString()" method of the object class
-    @Override
-    public String toString() {
-        String rv = "["; // The string we will eventually return
-
-        if(this.length == 0) return "[]";
-
-        for (int i = 0; i < this.length - 1; i++) {
-            rv = rv + this.a[i] + ", ";
+        public int count(E item){
+                int c = 0;
+                for (int i = 0; i < this.length; i++){
+                        if( this.a[i].equals(item))
+                                c++;
+                }
+                return c;
         }
-        // Add the last element of the list
-        rv = rv + this.a[this.length - 1] + "]";
-        return rv;
-    }
 
+        public E get(int idx){
+                return this.a[idx];
+        }
+        // returns the index of the first occurence of the item
+        public int find(E item){
+                        for(int i = 0; i < this.length; i++){
+                                if(this.a[i].equals(item))
+                                        return i;
+                        }
+                        return -1;
+        }
+
+        @Override
+        public String toString(){
+                String rv = "["; // print array here
+
+                if(this.length == 0) return "[]";
+
+                for(int i = 0; i < this.length-1; i++){
+                        rv = rv + this.a[i] + ", ";
+                }
+                // Add the last element of the list
+                rv = rv + this.a[this.length - 1] + "]";
+                return rv;
+        }
 }
