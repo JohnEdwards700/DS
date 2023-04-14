@@ -5,9 +5,10 @@
 */
 
 public interface DSQueue<E>{
-   public void pushBack(E n); // operate by side effects
+
+   public void enqueue(E n); 
    
-   public void popFront();
+   public E dequeue();
    
    public int length();
 }

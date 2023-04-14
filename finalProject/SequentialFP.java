@@ -30,7 +30,7 @@ public class SequentialFP implements FinalProject{
 
     @Override
     public int isShortGameOver(char[][] arr) {
-
+        // This method was largely written by ChatGPT!
         // Check for five consecutive Xs or Os horizontally
         int hasXorO = 0;
         for (int i = 0; i < 20; i++) {

@@ -1,3 +1,3 @@
-public class DSLinkedList implements DSQueue{
+public class DSLinkedList<E> implements DSQueue<E> {
     
 }
