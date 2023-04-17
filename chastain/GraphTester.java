@@ -10,7 +10,16 @@ public class GraphTester {
     for (String[] entry : graphWords){
         DSArrayList<String> l = new DSArrayList<>();
         String key = entry[0];
-
+        for (int i = 1; i < entry.length; i++){
+            l.add(entry[i]);
+        }
+        graph.put(key, l);
     }
+
+    for (String key : graph.keySet()){
+        System.out.println(key + ":" + graph.get(key));
+    }
+
+    System.out.println("graphWords[2][2] is " + graphWords[2][2]);
     }    
 }
