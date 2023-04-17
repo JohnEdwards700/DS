@@ -8,34 +8,18 @@ import java.util.Arrays;
  */
 
 public class GraderH2H {
-    DSArrayList<FinalProject> allFinalProjects;
-    DSArrayList<String> allFinalProjectNames;
+    private DSArrayList<FinalProject> allFinalProjects;
+	private DSArrayList<String> allFinalProjectNames;
+    private String[][] oneResults; // Results of single head-to-head games
+	private int[][][] manyResults; // Results of many head-to-head games
+    char[][] board;
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
         GraderH2H g = new GraderH2H();
         g.init();
         g.playOneGameH2H();
         //g.playManyH2H();
     }
-
-    private void playManyH2H() {
-        int numRounds = 100;
-        int numGames = allFinalProjects.length();
-        System.out.println("Number of players: " + numGames);
-        for(int game1 = 0; game1 < numGames; game1++){
-            String Player1Name = allFinalProjectNames.get(game1);
-            for(int game2 = 0; game2 < numGames; game2++){
-                String Player2Name = allFinalProjectNames.get(game2);
-                System.out.printf("Playing %-15s vs. %-15s %d times: ", Player1Name, Player2Name, numRounds);
-                int[] record = new int[3];
-                for(int i = 0; i < numRounds; i++){
-                    int winner = play(game1, game2);
-                    record[winner]++;
-                }
-                System.out.println(Arrays.toString(record));
-            }
-        }
-	}
 
 	public void init(){
         allFinalProjects = new DSArrayList<>();
@@ -68,21 +52,62 @@ public class GraderH2H {
         System.out.println("Competitors: " + allFinalProjectNames);
     }
 
-	private void playOneGameH2H() {
-        int numGames = allFinalProjects.length();
-        System.out.println("Number of players: " + numGames);
-        for(int game1 = 0; game1 < numGames - 1; game1++){
-            for(int game2 = game1 +1; game2 < numGames; game2++){
-                System.out.println("Playing " + game1 + " vs. " + game2);
-                play(game1, game2);
+    public void playManyH2H() {
+        int numRounds = 100;
+        int numPlayers = allFinalProjects.length();
+        System.out.println("Number of players: " + numPlayers);
+
+        // array of results
+        manyResults = new int[numPlayers][numPlayers][3];
+
+        for(int game1 = 0; game1 < numPlayers; game1++){
+            String Player1Name = allFinalProjectNames.get(game1);
+            for(int game2 = 0; game2 < numPlayers; game2++){
+                String Player2Name = allFinalProjectNames.get(game2);
+                System.out.printf("Playing %-15s vs. %-15s %d times: ", Player1Name, Player2Name, numRounds);
+                int[] record = new int[3];
+                for(int i = 0; i < numRounds; i++){
+                    int winner = play(game1, game2);
+                    record[winner]++;
+                }
+                System.out.println(Arrays.toString(record));
+                manyResults[game1][game2] = record;
             }
         }
 	}
 
+	public void playOneGameH2H() {
+        int numGames = allFinalProjects.length();
+        oneResults = new String[numGames][numGames]; // For the GUI
+
+        System.out.println("Number of players: " + numGames);
+        for(int game1 = 0; game1 < numGames; game1++){
+            String Player1Name = allFinalProjectNames.get(game1);
+            for(int game2 = 0; game2 < numGames; game2++){
+                String Player2Name = allFinalProjectNames.get(game2);
+                System.out.println("Playing " + Player1Name + " vs. " + Player2Name);
+                int winner = play(game1, game2);
+                String winnerName = allFinalProjectNames.get(winner == 1 ? game1 : game2);
+                if(winner == 0) winnerName = "Tie.";
+                oneResults[game1][game2] = drawBoard(this.board, winnerName);
+            }
+        }
+	}
+
+    /**
+     * Play a single game between two players, with g1 going first.
+     * 
+     * @param g1 The index of the first player
+     * @param g2 The index of the second player
+     * 
+     * @return 0 for a Tie, 1 if g1 wins, 2 if g2 wins.
+     * 
+     * Note that as a side effect, this fills the global board[][] array.
+     */
 	private int play(int g1, int g2) {
         FinalProject game1 = allFinalProjects.get(g1);
         FinalProject game2 = allFinalProjects.get(g2);
-        char[][] board = new char[20][20];
+        board = new char[20][20];
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
                 board[i][j] = '.';
@@ -111,21 +136,22 @@ public class GraderH2H {
         int winner = isShortGameOver(board);
         String winnerName = allFinalProjectNames.get(winner == 1 ? g1 : g2);
         if(winner == 0) winnerName = "Tie.";
-        drawBoard(board, winnerName);
+        System.out.println(drawBoard(board, winnerName));
 
         return winner;
     }
 
 
-    private void drawBoard(char[][] board, String winnerName){
+    public String drawBoard(char[][] board, String winnerName){
         int winner = isShortGameOver(board);
-        System.out.printf("Player %d (%s) has won the game\n", winner, winnerName);
+        String rv = String.format("Player %d (%s) has won the game\n", winner, winnerName);
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
-                System.out.print(board[i][j] + " ");
+                rv = rv + board[i][j] + " ";
             }
-            System.out.println("");
+            rv = rv + "\n";
         }
+        return rv;
 	}
 
 
@@ -204,5 +230,25 @@ public class GraderH2H {
     public int isLongGameOver(char[][] b) {
         return 0;
     }
+
+    // Getter
+    public DSArrayList<FinalProject> getAllFinalProjects() {
+		return allFinalProjects;
+	}
+
+    // Getter
+	public DSArrayList<String> getAllFinalProjectNames() {
+		return allFinalProjectNames;
+	}
+
+    // Getter
+    public int[][][] getManyResults() {
+		return manyResults;
+	}
+
+    // Getter
+    public String[][] getOneResults() {
+		return oneResults;
+	}
 
 }
