@@ -3,7 +3,7 @@
  * 
  * An interface describes behavior "from the outside"
  */
-public interface DSQueue {
+public interface DSQueue<E> {
 
    public void enqueue(E n);
    
