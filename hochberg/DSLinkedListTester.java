@@ -9,5 +9,10 @@ public class DSLinkedListTester {
 
         System.out.println("Queue length is " + l.length());
         System.out.println("Queue is " + l);
+        l.dequeue();
+        l.dequeue();
+        l.dequeue();
+        System.out.println("Queue length is " + l.length());
+        System.out.println("Queue is " + l);
     }
 }
