@@ -24,16 +24,7 @@ public class DSLinkedList<E> implements DSQueue<E> {
   }
 
   public E dequeue() {
-    if(this.numberOfItems == 0) return null;
-    
-    E rv = this.first.item;
-    if(this.numberOfItems == 1){
-      this.last = null;
-    }
-    this.first = this.first.next;
-    this.numberOfItems--;
-
-    return rv;
+    return null;
   }
 
   public int length() {

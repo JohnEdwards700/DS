@@ -7,9 +7,10 @@ public class GraphTester {
   static HashMap<String, DSArrayList<String>> graph;
 
   public static void main(String[] args) {
-    graph = new HashMap<>();
-    buildGraph();
-    findShortestPath("bane", "kale");
+    //graph = new HashMap<>();
+    //buildGraph();
+    buildWordGraphFromFile("words4.txt");
+    findShortestPath("tide", "bale");
   }
 
   /**
@@ -20,24 +21,43 @@ public class GraphTester {
   static void findShortestPath(String start, String end){
     DSQueue<String> q = new DSLinkedList<String>();
     HashMap<String, Integer> distance = new HashMap<>();
+    HashMap<String, String> parent = new HashMap<>();
 
     q.enqueue(start);
     distance.put(start, 0);
+    parent.put(start, null); // only vertex with a null parent
+    // Useful for terminating a while loop
 
     while(q.length() > 0){
       System.out.println(q);
       String v = q.dequeue();
       //for(String n : graph.get(v)){ // Won't work. DSArrayList is not Iterable.
       DSArrayList<String> neighbors = graph.get(v);
+      System.out.println("(***" + v);
       for(int i = 0; i < neighbors.length(); i++){   
         String n = neighbors.get(i);
         if(!distance.containsKey(n)){
           q.enqueue(n);
           distance.put(n, distance.get(v)+1);
+          parent.put(n, v);
         }
       }
     }
     System.out.println(distance);
+    System.out.println(parent);
+    printPath(end, parent);
+  }
+
+  /** 
+   *  Reconstruct the path from v back to the root 
+  */
+  static void printPath(String v, HashMap<String, String> parent){
+    String rv = v;
+    while(parent.get(v) != null){
+      v = parent.get(v);
+      rv = v + "->" + rv;
+    }
+    System.out.println(rv);
   }
 
   static void buildGraph() {
