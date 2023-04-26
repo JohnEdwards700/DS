@@ -3,8 +3,15 @@ import java.util.HashMap;
 public class GraphTester {
     public static void main(String[] args){
         HashMap<String, DSArrayList<String>> graph = new HashMap<>();
+
+        // Connected Graph example
         String[][] graphWords = new String[][] {{"live", "five","dive"},
-    {"five","live","dive"},{"have","save","hove","gave"},{"dive","five","live"},{"save","have","gave"},{"hove","have"},{"gave","save","have"}};
+ {"five","live","dive","fave"},{"fave","have","save","gave"}, {"have","save","hove","gave","fave"},{"dive","five","live"},{"save","have","gave","fave"},{"hove","have"},{"gave","save","have","fave"}};
+    
+    /* Graph example that is not connected
+    String[][] graphWords = new String[][] {{"live", "five","dive"},
+ {"five","live","dive"},{"have","save","gave"}, {"have","save","hove","gave"},{"dive","five","live"},{"save","have","gave"},{"hove","have"},{"gave","save","have"}};
+*/
 
     // Build the graph
     for (String[] entry : graphWords){
@@ -22,10 +29,27 @@ public class GraphTester {
 
     // Initialize the Visited List
     DSArrayList<String> visited = new DSArrayList<>();
-    
-    // Breadth First Search Implementation
-    
 
-    System.out.println("graphWords[2][2] is " + graphWords[2][2]);
-    }    
+    // Make Queue for BFS
+    DSLinkedList<String> toSearch = new DSLinkedList<>();
+
+
+    // Breadth First Search Implementation
+    visited.add("live");
+    toSearch.enqueue("live");
+
+    while(toSearch.length() != 0){
+        String v = toSearch.dequeue();
+        DSArrayList<String> nbrs = graph.get(v);
+        for (int i = 0; i < nbrs.length(); i++){
+            String nbr = nbrs.get(i);
+            if(visited.find(nbr) == -1){
+                visited.add(nbr);
+                toSearch.enqueue(nbr);
+            }
+        }
+        System.out.println("Visited " + visited);
+        System.out.println("Searching " + toSearch);
+    }
+}
 }
