@@ -20,11 +20,12 @@ public class DSLinkedList<E> implements DSQueue<E>{
     }
 
     public E dequeue() {
-
+       E x = (E)(new Object()); 
+       return x;
     }
 
     public int length(){
-        return numberofItems;
+        return numberOfItems;
     }
 
     public String toString(){
@@ -32,7 +33,7 @@ public class DSLinkedList<E> implements DSQueue<E>{
         Box b = this.first;
         while(b != null){
             rv = rv + b.item + ", ";
-            b = b.next();
+            b = b.next;
         }
 
         rv += "]";

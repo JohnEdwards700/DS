@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Arrays;
 
 public class GraphTester {
   static HashMap<String, DSArrayList<String>> graph;
@@ -10,7 +11,20 @@ public class GraphTester {
     //graph = new HashMap<>();
     //buildGraph();
     buildWordGraphFromFile("words4.txt");
-    findShortestPath("tide", "bale");
+    //findShortestPath(args[0], args[1]);
+    System.out.println(findDFSPath(args[0], args[1]));
+  }
+
+  public static boolean findDFSPath(String start, String end){
+    if(start.equals(end)) return true;
+
+    DSArrayList<String> neighbors = graph.get(start);
+    for(int i = 0; i < neighbors.length(); i++){
+      String n = neighbors.get(i);
+      if(findDFSPath(n, end)) return true;
+    }
+
+    return false;
   }
 
   /**
@@ -19,7 +33,7 @@ public class GraphTester {
    * @param end
    */
   static void findShortestPath(String start, String end){
-    DSQueue<String> q = new DSLinkedList<String>();
+    DSQueue<String> q = new DSLinkedListRob<String>();
     HashMap<String, Integer> distance = new HashMap<>();
     HashMap<String, String> parent = new HashMap<>();
 
@@ -29,11 +43,11 @@ public class GraphTester {
     // Useful for terminating a while loop
 
     while(q.length() > 0){
-      System.out.println(q);
+      //System.out.println(q);
       String v = q.dequeue();
+      //if(v.equals("love")) System.out.println(v.charAt(22));
       //for(String n : graph.get(v)){ // Won't work. DSArrayList is not Iterable.
       DSArrayList<String> neighbors = graph.get(v);
-      System.out.println("(***" + v);
       for(int i = 0; i < neighbors.length(); i++){   
         String n = neighbors.get(i);
         if(!distance.containsKey(n)){
@@ -44,7 +58,10 @@ public class GraphTester {
       }
     }
     System.out.println(distance);
-    System.out.println(parent);
+    String[] keys = distance.keySet().toArray(new String[]{""});
+    Arrays.sort(keys);
+    System.out.println(Arrays.toString(keys));
+    //System.out.println(parent);
     printPath(end, parent);
   }
 
@@ -175,7 +192,8 @@ public class GraphTester {
    * @param s1 First string
    * @param s2 Second string
    *
-   * @return The number of characters on which they differ
+   * @return The number of characters on which they differ.
+   * This is called the "Hamming" distance
    */
   static int distance(String s1, String s2) {
     int d = 0;
@@ -221,6 +239,7 @@ public class GraphTester {
    */
   static void buildWordGraphFromFile(String filename) {
     DSArrayList<String> wordList = readWords(filename);
+    //System.out.println(wordList);
     graph = buildGraph(wordList);
 
   }
@@ -238,10 +257,10 @@ public class GraphTester {
     HashMap<String, DSArrayList<String>> rv = new HashMap<>();
     int numWords = wordList.length();
 
-    for (int i = 0; i < numWords - 1; i++) {
+    for (int i = 0; i < numWords; i++) {
       String word = wordList.get(i);
       rv.put(word, new DSArrayList<String>()); // empty list of neighbors
-      for (int j = i + 1; j < numWords; j++) {
+      for (int j = 0; j < numWords; j++) {
         String otherWord = wordList.get(j);
         if (distance(word, otherWord) == 1) {
           rv.get(word).add(otherWord);
@@ -252,6 +271,7 @@ public class GraphTester {
         }      
       }
     }
+    //System.out.println(rv);
     return rv;
   }
 

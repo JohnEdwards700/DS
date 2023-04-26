@@ -24,18 +24,39 @@ public class DSLinkedList<E> implements DSQueue<E> {
   }
 
   public E dequeue() {
-    E rv = this.first.item;
-    if(this.numberOfItems == 1){
-      this.last = null;
-    }
-    this.first = this.first.next;
-
-    return rv;
+    return null;
   }
 
+  /**
+   * Return the number of items in the queue
+   */
   public int length() {
     return numberOfItems;
   }
+
+  /**
+   * Return the number of times that item appears in the DSLinkedList
+   * You may assume that the generic type E implements the equals() method.
+   * 
+   * @param item The item to search for
+   * 
+   * @return The number of times item occurs in this DSLinkedList
+   */
+  public int count(E item){
+    return 0;
+  }
+
+
+  /**
+   * Removes and returns the right-most item from the queue.
+   * 
+   * @return The last item enqueued, or null if the List is empty.
+   */
+  public E popRight(){
+    return null;
+  }
+
+  
 
   public String toString(){
     String rv = "[";
