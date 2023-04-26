@@ -3,8 +3,8 @@ import java.util.HashMap;
 public class GraphTester {
     public static void main(String[] args){
         HashMap<String, DSArrayList<String>> graph = new HashMap<>();
-        String[][] graphWords = new String[][] {{"live", "five"},
-    {"five","live","dive"},{"have","save","hove","gave"}};
+        String[][] graphWords = new String[][] {{"live", "five","dive"},
+    {"five","live","dive"},{"have","save","hove","gave"},{"dive","five","live"},{"save","have","gave"},{"hove","have"},{"gave","save","have"}};
 
     // Build the graph
     for (String[] entry : graphWords){
@@ -19,6 +19,12 @@ public class GraphTester {
     for (String key : graph.keySet()){
         System.out.println(key + ":" + graph.get(key));
     }
+
+    // Initialize the Visited List
+    DSArrayList<String> visited = new DSArrayList<>();
+    
+    // Breadth First Search Implementation
+    
 
     System.out.println("graphWords[2][2] is " + graphWords[2][2]);
     }    
