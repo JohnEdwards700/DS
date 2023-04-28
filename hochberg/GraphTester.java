@@ -10,18 +10,57 @@ public class GraphTester {
   public static void main(String[] args) {
     //graph = new HashMap<>();
     //buildGraph();
-    buildWordGraphFromFile("words4.txt");
-    //findShortestPath(args[0], args[1]);
+    buildWordGraphFromFile("words5.txt");
+
+    long startTime = System.currentTimeMillis();
+    findShortestPath(args[0], args[1]);
+    System.out.println("Elapsed time BFS: " + (System.currentTimeMillis() - startTime));
+    
+
+    startTime = System.currentTimeMillis();
     System.out.println(findDFSPath(args[0], args[1]));
+    System.out.println("Elapsed time DFS: " + (System.currentTimeMillis() - startTime));
   }
 
+  /**
+   * Manage the DFS. Initial data structures. Etc.
+   * @param start
+   * @param end
+   * @return
+   */
   public static boolean findDFSPath(String start, String end){
+    HashMap<String, Integer> distance = new HashMap<>();
+    HashMap<String, String> parent = new HashMap<>();
+
+    distance.put(start, 0);
+    parent.put(start, null);
+
+    boolean reachable = findDFSPathVisit(start, end, distance, parent);
+    printPath(end, parent);
+    return reachable;
+  }
+
+
+  /**
+   * The recursive part of the DFS
+   */
+  public static boolean findDFSPathVisit(String start, String end,
+            HashMap<String, Integer> distance, HashMap<String, String> parent){
+
+    //System.out.printf("Now serving vertex %s, with distance %d\n", start, distance.get(start));
+
     if(start.equals(end)) return true;
 
     DSArrayList<String> neighbors = graph.get(start);
     for(int i = 0; i < neighbors.length(); i++){
       String n = neighbors.get(i);
-      if(findDFSPath(n, end)) return true;
+
+      if(distance.containsKey(n)) continue; // n has been visited previously
+
+      distance.put(n, distance.get(start) + 1);
+      parent.put(n, start);
+      boolean reachable = findDFSPathVisit(n, end, distance, parent);
+      if(reachable) return true;
     }
 
     return false;
@@ -57,10 +96,10 @@ public class GraphTester {
         }
       }
     }
-    System.out.println(distance);
+    //System.out.println(distance);
     String[] keys = distance.keySet().toArray(new String[]{""});
     Arrays.sort(keys);
-    System.out.println(Arrays.toString(keys));
+    //System.out.println(Arrays.toString(keys));
     //System.out.println(parent);
     printPath(end, parent);
   }
