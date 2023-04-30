@@ -1,7 +1,9 @@
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.border.MatteBorder;
 
 import java.awt.BorderLayout;
@@ -27,6 +29,9 @@ public class GraderGUI extends JFrame implements ActionListener{
     JLabel[][] resultLabels;
 	private JButton oneGameButton;
 	private JButton manyGamesButton;
+    private JRadioButton bShort;
+    private JRadioButton bLong;
+    private String longOrShort; // Which game to play
     
     public static void main(String[] args){
         new GraderGUI();
@@ -66,15 +71,31 @@ public class GraderGUI extends JFrame implements ActionListener{
         }
         this.add(h2hpanel, BorderLayout.CENTER);
 
+        // Create the radio buttons
+        ButtonGroup buttonGroup = new ButtonGroup();
+        bShort = new JRadioButton("Short Game");
+        bShort.setActionCommand("short");
+        bShort.addActionListener(this);
+        bShort.setSelected(true);
+        this.longOrShort = "short";
+        buttonGroup.add(bShort);
+        bLong = new JRadioButton("Long Game");
+        bLong.setActionCommand("long");
+        bLong.addActionListener(this);
+        buttonGroup.add(bLong);
+
         // Add control buttons to the top of the grader
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(1, 2));
+        buttonPanel.setLayout(new GridLayout(1, 4));
+        buttonPanel.add(bShort);
+        buttonPanel.add(bLong);
         oneGameButton = new JButton("One Game");
         oneGameButton.addActionListener(this);
         buttonPanel.add(oneGameButton);
         manyGamesButton = new JButton("Many Games");
         manyGamesButton.addActionListener(this);
         buttonPanel.add(manyGamesButton);
+
         this.add(buttonPanel, BorderLayout.NORTH);
 
 
@@ -89,7 +110,7 @@ public class GraderGUI extends JFrame implements ActionListener{
 
         // Play many games head-to-head
         if(e.getSource() == this.manyGamesButton){
-            this.grader.playManyH2H();
+            this.grader.playManyH2H(longOrShort);
             int[][][] results = this.grader.getManyResults();
             for(int i = 0; i < numPlayers; i++){
                 for(int j = 0; j < numPlayers; j++){
@@ -99,7 +120,10 @@ public class GraderGUI extends JFrame implements ActionListener{
                         + record[1] + "</td><td>" + record[0] + "</td></tr></table></html>"; 
                     this.resultLabels[i+1][j+1].setText(t);
                     this.resultLabels[i+1][j+1].setFont(new Font("Serif", Font.PLAIN, 15));
-                    Color c = record[2] > record[1] ? new Color(1.0f, 0.8f, 0.8f) : new Color(0.8f, 0.8f, 1.0f);
+                    Color c = Color.white;
+                    if(record[2] > record[1])  c = new Color(1.0f, 0.8f, 0.8f);
+                    if(record[1] > record[2])  c = new Color(0.8f, 0.8f, 1.0f);
+                    if(record[2] == record[1]) c = new Color(0.8f, 1.0f, 0.8f);
                     this.resultLabels[i+1][j+1].setBackground(c);
                 }
             }            
@@ -107,7 +131,7 @@ public class GraderGUI extends JFrame implements ActionListener{
 
         // Play one game per pair
         if(e.getSource() == this.oneGameButton){
-            this.grader.playOneGameH2H();
+            this.grader.playOneGameH2H(longOrShort);
             String[][] results = this.grader.getOneResults();
             for(int i = 0; i < numPlayers; i++){
                 for(int j = 0; j < numPlayers; j++){
@@ -115,10 +139,19 @@ public class GraderGUI extends JFrame implements ActionListener{
                     String t = "<html>" + board.replace("\n", "<br>") + "</html>"; 
                     this.resultLabels[i+1][j+1].setText(t);
                     this.resultLabels[i+1][j+1].setFont(new Font("Monospaced", Font.PLAIN, 5));
-                    Color c = board.contains("Player 2") ? new Color(1.0f, 0.8f, 0.8f) : new Color(0.8f, 0.8f, 1.0f);
+                    Color c = Color.white;
+                    if(board.contains("Player 2")) c = new Color(1.0f, 0.8f, 0.8f);
+                    if(board.contains("Player 1")) c = new Color(0.8f, 0.8f, 1.0f);
+                    if(board.contains("Tie"))      c = new Color(0.8f, 1.0f, 0.8f);
                     this.resultLabels[i+1][j+1].setBackground(c);
                 }
             }            
+        }
+
+        // If the long or short radio button was selected
+        if(e.getSource() == this.bShort || e.getSource() == this.bLong){
+            this.longOrShort = e.getActionCommand();
+            this.grader.setLongOrShort(this.longOrShort);
         }
 	}
 
