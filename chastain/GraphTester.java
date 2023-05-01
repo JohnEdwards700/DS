@@ -63,5 +63,25 @@ public class GraphTester {
     for (String key : distFromRoot.keySet()){
         System.out.println("dist" + key + ":" + distFromRoot.get(key));
     }
+
+    // Initialize the Visited List
+    DSArrayList<String> visitedDFS = new DSArrayList<>();
+
+    // Make Stack for DFS
+    DSLinkedListStack<String> toSearchDFS = new DSLinkedListStack<>();
+
+    toSearchDFS.push(rootVtx);
+    while(toSearchDFS.length() != 0){
+        String v = toSearchDFS.pop();
+	if(visitedDFS.find(v) == -1){
+	    visitedDFS.add(v);
+	    DSArrayList<String> nbrs = graph.get(v);
+	    for(int i = 0; i < nbrs.length(); i++){
+		toSearchDFS.push(nbrs.get(i));
+	    }
+	}
+        System.out.println("Visited " + visitedDFS);
+        System.out.println("Searching " + toSearchDFS);
+    }  
 }
 }
