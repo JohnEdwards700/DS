@@ -78,6 +78,7 @@ public class GraderGUI extends JFrame implements ActionListener{
         bShort.addActionListener(this);
         bShort.setSelected(true);
         this.longOrShort = "short";
+        this.grader.setLongOrShort("short");
         buttonGroup.add(bShort);
         bLong = new JRadioButton("Long Game");
         bLong.setActionCommand("long");
@@ -115,7 +116,8 @@ public class GraderGUI extends JFrame implements ActionListener{
             for(int i = 0; i < numPlayers; i++){
                 for(int j = 0; j < numPlayers; j++){
                     int[] record = results[i][j];
-                    String t = "<html><table><tr align=\"center\"><td></td><td>" 
+                    String t = "<html><table><tr align=\"center\"><td style=\"color:white; background-color:black\">"
+                        + record[3] + "</td><td>" 
                         + record[2] + "</td></tr><tr align=\"center\"><td>"
                         + record[1] + "</td><td>" + record[0] + "</td></tr></table></html>"; 
                     this.resultLabels[i+1][j+1].setText(t);

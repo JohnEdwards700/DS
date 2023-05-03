@@ -14,6 +14,7 @@ public class GraderH2H {
     private int[][][] manyResults; // Results of many head-to-head games
     char[][] board;
     private String longOrShort; // From GraderGUI
+    private int globalTimer;
 
     public static void main(String[] args) {
         GraderH2H g = new GraderH2H();
@@ -67,7 +68,8 @@ public class GraderH2H {
             for (int game2 = 0; game2 < numPlayers; game2++) {
                 String Player2Name = allFinalProjectNames.get(game2);
                 System.out.printf("Playing %-15s vs. %-15s %d times: ", Player1Name, Player2Name, numRounds);
-                int[] record = new int[3];
+                int[] record = new int[4];
+                this.globalTimer = 0;
                 for (int i = 0; i < numRounds; i++) {
                     int winner;
                     if (lOrS.equals("short"))
@@ -76,6 +78,7 @@ public class GraderH2H {
                         winner = playLong(game1, game2);
                     record[winner]++;
                 }
+                record[3] = this.globalTimer;
                 System.out.println(Arrays.toString(record));
                 manyResults[game1][game2] = record;
             }
@@ -125,11 +128,13 @@ public class GraderH2H {
         int turn = 1;
         int[] move;
         while (isShortGameOver(board) == -1) {
+            long startTime = System.currentTimeMillis();
             if (turn == 1) {
                 move = game1.playShortGame(board, turn);
             } else {
                 move = game2.playShortGame(board, turn);
             }
+            this.globalTimer += (int)(System.currentTimeMillis() - startTime);
             int row = move[0];
             int col = move[1];
             char c = board[row][col];
